@@ -30,7 +30,7 @@ HTML5 provides us with lots of semantic elements aimed to describe precisely the
 </main>
 ```
 
-Make sure you understand the semantic of the elements you're using. It's worse to use a semantic
+Make sure you understand the semantics of the elements you're using. It's worse to use a semantic
 element in a wrong way than staying neutral.
 
 ```html
@@ -139,7 +139,7 @@ important factor.
 <title>Hello, world.</title>
 <p>...</p>
 
-<!-- good-->
+<!-- good -->
 <!doctype html>
 <meta charset=utf-8>
 <title>Hello, world.</title>
@@ -242,7 +242,7 @@ sibling combinators.
 
 ```css
 /* bad */
-div:first-of-type :last-chid > p ~ *
+div:first-of-type :last-child > p ~ *
 
 /* good */
 div:first-of-type .info
@@ -601,10 +601,12 @@ createDivs(5);
 const createDivs = howMany => {
   if (!howMany) return;
   document.body.insertAdjacentHTML("beforeend", "<div></div>");
-  return createDiv(howMany - 1);
+  return createDivs(howMany - 1);
 };
 createDivs(5);
 ```
+
+Here's a [generic loop function](https://gist.github.com/bendc/6cb2db4a44ec30208e86) making recursion easier to use.
 
 ### Arguments
 
@@ -689,21 +691,15 @@ Avoid nesting functions when you don't have to.
 Avoid multiple nested function calls. Use composition instead.
 
 ```javascript
-// bad
 const plus1 = a => a + 1;
 const mult2 = a => a * 2;
 
+// bad
 mult2(plus1(5)); // => 12
 
-
 // good
-const pipeline = (...funcs) =>
-  val => funcs.reduce((a, b) => b(a), val);
-
-const plus1 = a => a + 1;
-const mult2 = a => a * 2;
+const pipeline = (...funcs) => val => funcs.reduce((a, b) => b(a), val);
 const addThenMult = pipeline(plus1, mult2);
-
 addThenMult(5); // => 12
 ```
 
@@ -734,13 +730,12 @@ Favor `const` over `let` and `let` over `var`.
 
 ```javascript
 // bad
-var obj = {};
-obj["foo" + "bar"] = "baz";
+var me = new Map();
+me.set("name", "Ben").set("country", "Belgium");
 
 // good
-const obj = {
-  ["foo" + "bar"]: "baz"
-};
+const me = new Map();
+me.set("name", "Ben").set("country", "Belgium");
 ```
 
 ### Conditions
@@ -808,7 +803,7 @@ meSize++;
 meSize; // => 3
 
 // good
-const me = Map();
+const me = new Map();
 me.set("name", "Ben");
 me.set("age", 30);
 me.size; // => 2
@@ -818,7 +813,8 @@ me.size; // => 3
 
 ### Curry
 
-Currying might have its place in other languages, but avoid it in JavaScript. It makes your code harder to read by introducing a foreign paradigm while the appropriate use cases are extremely unusual.
+Currying is a powerful but foreign paradigm for many developers. Don't abuse it as its appropriate
+use cases are fairly unusual.
 
 ```javascript
 // bad
